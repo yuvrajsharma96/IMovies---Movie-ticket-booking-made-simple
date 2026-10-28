@@ -1,0 +1,312 @@
+{
+  "info": {
+    "_postman_id": "a9183421-4f12-4f32-8492-imovies-api-collection",
+    "name": "IMovies - Movie Ticket Booking API",
+    "description": "Comprehensive Postman Collection for testing all IMovies API endpoints, authentication, real-time seat locks, bookings, and admin operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "movieId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "showId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bookingId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sarah Connor\",\n  \"email\": \"sarah@example.com\",\n  \"password\": \"secret123\",\n  \"phone\": \"+91 98765 00000\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if(json.token) { pm.collectionVariables.set('token', json.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@imovies.com\",\n  \"password\": \"user123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if(json.token) { pm.collectionVariables.set('adminToken', json.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@imovies.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/auth/profile", "host": ["{{baseUrl}}"], "path": ["auth", "profile"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Movies",
+      "item": [
+        {
+          "name": "Get All Movies",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/movies?genre=All&sort=rating", "host": ["{{baseUrl}}"], "path": ["movies"], "query": [{ "key": "genre", "value": "All" }, { "key": "sort", "value": "rating" }] }
+          }
+        },
+        {
+          "name": "Get Movie By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/movies/{{movieId}}", "host": ["{{baseUrl}}"], "path": ["movies", "{{movieId}}"] }
+          }
+        },
+        {
+          "name": "Create Movie (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Gladiator II\",\n  \"genre\": [\"Action\", \"Drama\", \"Adventure\"],\n  \"language\": \"English\",\n  \"duration\": 148,\n  \"posterUrl\": \"https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80\",\n  \"trailerUrl\": \"https://www.youtube.com/embed/Way9Dexny3w\",\n  \"description\": \"Years after witnessing the death of Maximus, Lucius must enter the Colosseum to restore glory.\",\n  \"rating\": 8.4,\n  \"certificate\": \"A\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/movies", "host": ["{{baseUrl}}"], "path": ["movies"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Theatres",
+      "item": [
+        {
+          "name": "Get All Theatres",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/theatres?city=Mumbai", "host": ["{{baseUrl}}"], "path": ["theatres"], "query": [{ "key": "city", "value": "Mumbai" }] }
+          }
+        },
+        {
+          "name": "Create Theatre (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PVR Superplex: Phoenix Mall\",\n  \"location\": { \"city\": \"Mumbai\", \"state\": \"Maharashtra\" },\n  \"address\": \"High Street Phoenix, Lower Parel\",\n  \"screenType\": [\"IMAX 2D\", \"Dolby Atmos\", \"4DX\"],\n  \"totalSeats\": 84\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/theatres", "host": ["{{baseUrl}}"], "path": ["theatres"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Shows",
+      "item": [
+        {
+          "name": "Get Shows (By Date & City)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/shows?city=Mumbai", "host": ["{{baseUrl}}"], "path": ["shows"], "query": [{ "key": "city", "value": "Mumbai" }] }
+          }
+        },
+        {
+          "name": "Get Show By ID (Live Seat Matrix)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/shows/{{showId}}", "host": ["{{baseUrl}}"], "path": ["shows", "{{showId}}"] }
+          }
+        },
+        {
+          "name": "Create Show (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"movieId\": \"{{movieId}}\",\n  \"theatreId\": \"{{theatreId}}\",\n  \"screenName\": \"Audi 1 - IMAX\",\n  \"screenType\": \"IMAX 2D\",\n  \"showDate\": \"2026-10-28\",\n  \"showTime\": \"07:30 PM\",\n  \"ticketPrice\": {\n    \"vip\": 450,\n    \"premium\": 320,\n    \"standard\": 220\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/shows", "host": ["{{baseUrl}}"], "path": ["shows"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Bookings & Real-Time Locks",
+      "item": [
+        {
+          "name": "Lock Seats (Concurrency Hold)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": \"{{showId}}\",\n  \"seatNumbers\": [\"C8\", \"C9\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/lock-seats", "host": ["{{baseUrl}}"], "path": ["bookings", "lock-seats"] }
+          }
+        },
+        {
+          "name": "Unlock Seats",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": \"{{showId}}\",\n  \"seatNumbers\": [\"C8\", \"C9\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings/unlock-seats", "host": ["{{baseUrl}}"], "path": ["bookings", "unlock-seats"] }
+          }
+        },
+        {
+          "name": "Confirm Booking & Generate QR Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"showId\": \"{{showId}}\",\n  \"seats\": [\n    { \"seatNumber\": \"C8\", \"category\": \"Premium\", \"price\": 320 },\n    { \"seatNumber\": \"C9\", \"category\": \"Premium\", \"price\": 320 }\n  ],\n  \"subtotal\": 640,\n  \"convenienceFee\": 45,\n  \"tax\": 18,\n  \"totalAmount\": 703,\n  \"paymentMethod\": \"UPI\",\n  \"paymentId\": \"PAY_TEST_9831\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/bookings", "host": ["{{baseUrl}}"], "path": ["bookings"] }
+          }
+        },
+        {
+          "name": "Get My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/my-bookings", "host": ["{{baseUrl}}"], "path": ["bookings", "my-bookings"] }
+          }
+        },
+        {
+          "name": "Get Booking Details By ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["bookings", "{{bookingId}}"] }
+          }
+        },
+        {
+          "name": "Cancel Booking & Free Seats",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/{{bookingId}}/cancel", "host": ["{{baseUrl}}"], "path": ["bookings", "{{bookingId}}", "cancel"] }
+          }
+        },
+        {
+          "name": "Get Admin Booking Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/bookings/analytics", "host": ["{{baseUrl}}"], "path": ["bookings", "analytics"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Payments",
+      "item": [
+        {
+          "name": "Process Simulated Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 703,\n  \"paymentMethod\": \"Card\",\n  \"paymentDetails\": {\n    \"cardNumber\": \"4242424242424242\",\n    \"name\": \"Sarah Connor\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/payments/process", "host": ["{{baseUrl}}"], "path": ["payments", "process"] }
+          }
+        }
+      ]
+    }
+  ]
+}

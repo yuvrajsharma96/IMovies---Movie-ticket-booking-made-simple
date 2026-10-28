@@ -1,0 +1,33 @@
+{
+  "name": "imovies-movie-ticket-booking",
+  "version": "1.0.0",
+  "description": "IMovies - Movie Ticket Booking Made Simple. Full-stack MERN Application with Real-Time Seat Reservation.",
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "install:backend": "npm --prefix backend install",
+    "install:frontend": "npm --prefix frontend install",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan,magenta\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "start": "npm --prefix backend start",
+    "server": "npm --prefix backend run dev",
+    "client": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "seed": "npm --prefix backend run seed"
+  },
+  "keywords": [
+    "mern",
+    "movie-ticket-booking",
+    "cinema",
+    "seat-booking",
+    "socketio",
+    "real-time",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "author": "Yuvraj Sharma",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
