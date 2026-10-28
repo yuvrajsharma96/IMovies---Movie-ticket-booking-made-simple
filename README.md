@@ -4,12 +4,16 @@
 
 ![IMovies Banner](https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80)
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-IMovies_Web_App-rose?style=for-the-badge&logo=google-chrome&logoColor=white)](https://yuvrajsharma96.github.io/IMovies---Movie-ticket-booking-made-simple/)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-rose.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/Node.js-v18%2B-green.svg)](https://nodejs.org/)
 [![React Version](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev/)
 [![Socket.io](https://img.shields.io/badge/Socket.io-Real--Time-black.svg)](https://socket.io/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-06B6D4.svg)](https://tailwindcss.com/)
 [![Database](https://img.shields.io/badge/MongoDB-Mongoose-brightgreen.svg)](https://www.mongodb.com/)
+
+**🌐 Interactive Live Demo:** [https://yuvrajsharma96.github.io/IMovies---Movie-ticket-booking-made-simple/](https://yuvrajsharma96.github.io/IMovies---Movie-ticket-booking-made-simple/)
 
 **A modern, production-grade Full-Stack MERN Movie Ticket Booking platform featuring real-time seat locking with Socket.io, multi-tier interactive cinema seat grids, simulated payment gateways, and scannable digital QR-code passes.**
 
